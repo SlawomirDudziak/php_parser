@@ -7,6 +7,13 @@ $new_line_char = '<br/>';
 
 $tracking_number = $html->find('#wo_number', 0)->plaintext;
 $po_number = $html->find('#po_number', 0)->plaintext;
+
+$date_raw = $html->find('#scheduled_date', 0)->plaintext;
+$date_replaced = preg_replace('/\s+/', ',', $date_raw);
+$date_replaced2 = preg_replace('/,/', ' ', $date_replaced);
+$date_created = date_create($date_replaced2);
+$scheduled_date = date_format($date_created, "Y-m-d H:i");
+
 $customer = $html->find('#customer', 0)->plaintext;
 $trade = $html->find('#trade', 0)->plaintext;
 
@@ -35,7 +42,7 @@ $phone_float = floatval($phone_number);
 
 echo '<b>Tracking Number</b>: ' . $tracking_number . $new_line_char;
 echo '<b>PO Number</b>: ' . $po_number . $new_line_char;
-echo 'Data Scheduled w formacie daty i godziny (Y-m-d H:i): ' . $new_line_char;
+echo '<b>Data Scheduled w formacie daty i godziny (Y-m-d H:i)</b>: ' . $scheduled_date . $new_line_char;
 echo '<b>Customer</b>: ' . $customer . $new_line_char;
 echo '<b>Trade</b>: ' . $trade . $new_line_char;
 echo '<b>NTE (jako liczba float - bez formatowania)</b>: ' . $nte_float . $new_line_char;
