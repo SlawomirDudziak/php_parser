@@ -58,4 +58,4 @@ $data_to_save = array(
 $file = fopen('dane.csv', 'w');
 fputcsv($file, $data_to_save, ',');
 fclose($file);
-echo 'Success! Saved data to csv!';
+echo 'Success! Data saved to csv!';
