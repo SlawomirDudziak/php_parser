@@ -4,27 +4,32 @@ include('simplehtmldom/simple_html_dom.php');
 
 $html = file_get_html('wo_for_parse.html');
 
-$tracking_number = $html->find('#wo_number', 0)->plaintext;
-$po_number = $html->find('#po_number', 0)->plaintext;
+function html_find($element, $html)
+{
+    return $html->find($element, 0)->plaintext;
+}
 
-$date_raw = $html->find('#scheduled_date', 0)->plaintext;
+$tracking_number = html_find('#wo_number', $html);
+$po_number = html_find('#po_number', $html);
+
+$date_raw = html_find('#scheduled_date', $html);
 $date_replaced = preg_replace('/\s+/', ',', $date_raw);
 $date_replaced2 = preg_replace('/,/', ' ', $date_replaced);
 $date_created = date_create($date_replaced2);
 $scheduled_date = date_format($date_created, "Y-m-d H:i");
 
-$customer_raw = $html->find('#customer', 0)->plaintext;
+$customer_raw = html_find('#customer', $html);
 $customer = trim($customer_raw);
-$trade = $html->find('#trade', 0)->plaintext;
+$trade = html_find('#trade', $html);
 
-$nte = $html->find('#nte', 0)->plaintext;
+$nte = html_find('#nte', $html);
 $nte_number = preg_replace('/[$,]/', '', $nte);
 $nte_float = number_format(floatval($nte_number), 2, '.', '');
 
-$store_id = $html->find('#location_name', 0)->plaintext;
+$store_id = html_find('#location_name', $html);
 
 $address_final = [];
-$address = $html->find('a#location_address', 0)->plaintext;
+$address = html_find('a#location_address', $html);
 $address_formatted = preg_replace('/\s+/', ',', $address);
 $address_array = explode(',', $address_formatted);
 foreach ($address_array as $address) {
@@ -36,7 +41,7 @@ $city = $address_final[count($address_final)-3];
 $state = $address_final[count($address_final)-2];
 $post_code = $address_final[count($address_final)-1];
 
-$phone = $html->find('#location_phone', 0)->plaintext;
+$phone = html_find('#location_phone', $html);
 $phone_number = preg_replace('/\D+/', '', $phone);
 $phone_float = floatval($phone_number);
 
