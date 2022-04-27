@@ -37,9 +37,10 @@ foreach ($address_array as $address) {
 }
 
 $street = implode(" ", array_slice($address_final, 0, 3));
-$city = $address_final[count($address_final)-3];
-$state = $address_final[count($address_final)-2];
-$post_code = $address_final[count($address_final)-1];
+$address_length = count($address_final);
+$city = $address_final[$address_length - 3];
+$state = $address_final[$address_length - 2];
+$post_code = $address_final[$address_length - 1];
 
 $phone = html_find('#location_phone', $html);
 $phone_number = preg_replace('/\D+/', '', $phone);
